@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="org.qianyue.dao.DirectoryDao">
+   <select id="selectAll" resultType="Directory">
+      select id,folder_name,parent_id,is_parent,head_image_name from directory
+   </select>
+   
+   <select id="selectAllByPage" resultType="Directory">
+      select id,folder_name,parent_id,is_parent,head_image_name from directory
+   </select>
+   
+   
+   <update id="update">
+   update directory
+      <set>
+          <if test="folderName!=null">
+             folder_name=#{folderName},
+          </if>
+      </set>
+      where id=#{id}
+   </update>
+   
+   <select id="selectById" resultType="Directory">
+     select id,folder_name,parent_id,is_parent from directory
+     <where>
+       id=#{id}
+     </where>
+   </select>
+   
+   <delete id="delete">
+     delete from directory
+     <where>
+      id=#{id}
+     </where>
+   </delete>
+   
+   
+   <update id="updateIsParentOrNot">
+   update directory
+      <set>
+          <if test="isParent!=null">
+             is_parent=#{isParent},
+          </if>
+      </set>
+      where id=#{id}
+   </update>
+   
+   <insert id="addChild"> 
+     insert into directory(folder_name,parent_id,is_parent)
+     values(#{folderName},#{parentId},#{isParent})
+   </insert>
+   
+   <select id="selectMaxId" resultType="java.lang.Integer">
+    select max(id) from directory;
+   </select>
+   
+   <select id="selectIdByParentId" resultType="java.lang.Integer">
+     select id from directory
+     <where>
+       parent_id=#{id}
+     </where>
+   </select>
+   
+   <select id="judgeIdExists" resultType="java.lang.Integer">
+    select count(*) from directory 
+    <where>
+      id=#{id}
+    </where>
+   </select>
+   
+   <select id="judgeIsParent" resultType="java.lang.Integer">
+     select is_parent from directory
+     <where>
+       id=#{id}
+     </where>
+   </select>
+   
+   <select id="returnChildFolders" resultType="Directory">
+     select id,folder_name,parent_id,is_parent,head_image_name from directory
+       <where>
+       parent_id=#{parentId}
+     </where>
+   </select>
+   
+   
+   <update id="headImage">
+   update directory
+      <set>
+          <if test="headImageName!=null">
+             head_image_name=#{headImageName},
+          </if>
+      </set>
+      where id=#{id}
+   </update>
+   
+   
+</mapper>

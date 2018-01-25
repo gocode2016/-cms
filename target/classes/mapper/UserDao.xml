@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="org.qianyue.dao.UserDao">
+   <select id="select" resultType="User">
+     select id,name,password,ch_name from user u
+     <where>
+       <if test="name!=null">
+       and  u.name=#{name}
+       </if>
+       <if test="password!=null">
+       and  u.password=#{password}
+       </if>
+       <if test="chName!=null">
+       and  u.ch_name=#{chName}
+       </if>
+     </where>
+   </select>
+   
+   <update id="modifyPw">
+     update user
+      <set>
+          <if test="password!=null">
+             password=#{password},
+          </if>
+      </set>
+      where name=#{name}
+   </update>
+</mapper>
